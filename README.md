@@ -1,4 +1,4 @@
 # utkarsh
 
-## Coming soon (hopefully). Check out the blog: 
+## Coming soon. Check out the ray tracer blog: 
 [Blog](raytracingblog.md)
