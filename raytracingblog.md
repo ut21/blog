@@ -22,8 +22,7 @@ P3
 255 255 0 255 255 255 0 0 0
 ```
 
-To view a PPM file I am using an extension within VS Code. The output looks like:
-(image)
+To view a PPM file I am using an extension within VS Code.
 
 Now lets write a PPM file using code:
 ```cpp
@@ -390,7 +389,7 @@ $$
 
 We will now make a sphere, and any ray that hits the sphere will output red color (so, we should be seeing a red sphere on the screen).
 
-A sphere, with centre as $c(x,y,z)$ is parameterised as:
+A sphere, with centre as /c(x,y,z)/ is parameterised as:
 
 $$
 (x-cx)^2 + (y-cy)^2 + (z-cz)^2 = R^2
@@ -459,7 +458,7 @@ the `main()` remains unchanged, and the output is:
     <img src="./output/blgdsh.png" alt="alt text" style="width: 80%; border-radius: 0px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
 </p>
 
-Yay, it works, but also looks like the Bangladeshi flag which is an aesthetic chocie im not taking to my grave, so i will be using another `color()` that linearly interpolates blue hues depending on the $y$ value:
+Yay, it works, but also looks like the Bangladeshi flag which is an aesthetic chocie im not taking to my grave, so i will be using another `color()` that linearly interpolates blue hues depending on the /y/ value:
 ```cpp
 vec3 color(const ray& r) {
         if(hit_sphere(vec3(0,0,-1), 0.5, r)){
@@ -486,7 +485,7 @@ This is a surface normal:
 
 In code I map each component of the normal to be between 0 and 1 and then correspond them to rgb.
 
-Only those points will be illuminated which are hit by a ray (and for a ray hitting two points, I consider the one closer to the camera, which corresponds to the one with smaller $t$), and so along with a function to tell if a ray hits a sphere, I also need the hit point.
+Only those points will be illuminated which are hit by a ray (and for a ray hitting two points, I consider the one closer to the camera, which corresponds to the one with smaller /t/), and so along with a function to tell if a ray hits a sphere, I also need the hit point.
 
 ```cpp
 float hit_sphere_at_t(const vec3& center, float radius, const ray& r){
@@ -592,14 +591,14 @@ int main(){
 ```
 This outputs the same sphere I had previously gotten, but now I also have the ability to use the parametrised constructor from the camera class to change the camera positions and view boundaries from within the `main()` function.
 
-For example: The sphere is centered at $(0, 0, -1)$ (notice the parameters to `hit_sphere_at()`), with radius $=0.5$ and our camera is at $(0, 0, 0)$ but if I move the camera to $(0, 0, -0.4)$ the rendered sphere should appear larger as it is closer. And that does happen:
+For example: The sphere is centered at /(0, 0, -1)/ (notice the parameters to `hit_sphere_at()`), with radius /=0.5/ and our camera is at /(0, 0, 0)/ but if I move the camera to /(0, 0, -0.4)/ the rendered sphere should appear larger as it is closer. And that does happen:
 `camera cam(vec3(-2.0, -1.0, -1.0), vec3(4.0, 0.0, 0.0), vec3(0.0, 2.0, 0.0), vec3(0.0, 0.0, -0.4));` outputs:
 
 <p style="text-align:center">
     <img src="./output/bigsph.png" alt="alt text" style="width: 80%; border-radius: 0px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
 </p>
 
-We could also place the camera "behind" the sphere by making $z=-2$, this should output a sphere of the same size, since the distance between the camera and the centre of the sphere is still 1 units, but the color should be different since different normals are being rendered. And voila:
+We could also place the camera "behind" the sphere by making /z=-2/, this should output a sphere of the same size, since the distance between the camera and the centre of the sphere is still 1 units, but the color should be different since different normals are being rendered. And voila:
 
 <p style="text-align:center">
     <img src="./output/blsp.png" alt="alt text" style="width: 80%; border-radius: 0px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
@@ -608,7 +607,7 @@ We could also place the camera "behind" the sphere by making $z=-2$, this should
 
 ### A subtle bug appears
 
-So far, our code seems to be working correctly. But, what if we place the camera _INSIDE_ the surface of the sphere? Let's change the camera position to be $(0,0,-0.6)$. We would expect that the entire view of the camera would be covered by the sphere and we should see the gradient corresponding to the inner surface normals. The image rendered is:
+So far, our code seems to be working correctly. But, what if we place the camera _INSIDE_ the surface of the sphere? Let's change the camera position to be /(0,0,-0.6)/. We would expect that the entire view of the camera would be covered by the sphere and we should see the gradient corresponding to the inner surface normals. The image rendered is:
 
 <p style="text-align:center">
     <img src="./output/nosph.png" alt="alt text" style="width: 80%; border-radius: 0px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
@@ -637,11 +636,11 @@ Let's look at our new render now:
 
 Much better. If you keep the camera _on_ the sphere, the code still works and outputs the expect solid color corresponding to the normal of the point on which the camera is placed.
 
-(NOTE: with this bug fix approach we are basically allowing the camera to look "behind" itself, which might or might not be what you want depending on how realistic you want your renders to be, i found that this allows for some funky render possibilities so I let it be, for a more realistic fix, just change the function to return the smallest _positive_ $t$ value.)
+(NOTE: with this bug fix approach we are basically allowing the camera to look "behind" itself, which might or might not be what you want depending on how realistic you want your renders to be, i found that this allows for some funky render possibilities so I let it be, for a more realistic fix, just change the function to return the smallest _positive_ /t/ value.)
 
 ### Another bug (when will i catch a break)
 
-Look what happens if I place my camera at $(0,1,-1)$ which is also 1 unit away from the centre:
+Look what happens if I place my camera at /(0,1,-1)/ which is also 1 unit away from the centre:
 
 <p style="text-align:center">
     <img src="./output/cone.png" alt="alt text" style="width: 80%; border-radius: 0px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
@@ -656,7 +655,7 @@ So, the bug wasn't that bad after all, but to fix it we will need to allow the c
 FOV is field of view, which tells us how much our camera can see. Until now the FOV had been defined by `lower_left_corner`, `vertical` and `horizontal`. When you squint your eyes, your fov decreases.
 
 Now, we will define two parameters to the camera constructor:
-`vfov` which is the angle between the $xz$ plane and the fov plane which is perpendicular to $yz$ plane, and `aspect` which is the ratio between the height and width of our field of view.
+`vfov` which is the angle between the /xz/ plane and the fov plane which is perpendicular to /yz/ plane, and `aspect` which is the ratio between the height and width of our field of view.
 
 Let's update our camera class:
 
@@ -708,7 +707,7 @@ Great, but our camera still can't rotate. Let's change that.
 
 The approach I adopted is standard in computer graphics and camera transformations.
 
-To the constructor I added take two points (vec3 values) `lookfrom` and `lookat` and return a camera object located at `lookfrom` and positioned towards `lookat`-`lookfrom`. But there is one more degree of freedom: the roation about the `lookat`-`lookfrom` axis, this we calculate this using `vup`. Usually, `vup` is $(0,1,0)$, but notice that `vup` is not necessarily perpendicular to the `lookat`-`lookfrom` axis. 
+To the constructor I added take two points (vec3 values) `lookfrom` and `lookat` and return a camera object located at `lookfrom` and positioned towards `lookat`-`lookfrom`. But there is one more degree of freedom: the roation about the `lookat`-`lookfrom` axis, this we calculate this using `vup`. Usually, `vup` is /(0,1,0)/, but notice that `vup` is not necessarily perpendicular to the `lookat`-`lookfrom` axis. 
 
 Which means we have 2 (not necessarily perpendicular) linearly independant vectors, and we want to create the corresponding orthonormal basis. This basis is unique and can we calculated using thr _Gram-Schmidt process_.
 
@@ -806,7 +805,7 @@ $$
 f(A_x + t*B_x, A_y + t*B_y, A_z + t*B_z) = s
 $$
 
-For all the following curves, I have centered them at $(0,0,0)$ and moved the camera elsewhere. This is just to make the code look cleaner.
+For all the following curves, I have centered them at /(0,0,0)/ and moved the camera elsewhere. This is just to make the code look cleaner.
 
 ### Cylinder
 
@@ -822,7 +821,7 @@ $$
 \implies t^2*(B_x^2+B_y^2)+t*(2A_x B_x + 2A_y B_y) + (A_x^2 + A_y^2-R^2)=0
 $$
 
-This is quadratic in $t$ so we will follow the approach we did in spheres. I wrote `hit_cylinder_at_t()` and `colorCylinder()` like follows, and used `colorCylinder()` in `main()`:
+This is quadratic in /t/ so we will follow the approach we did in spheres. I wrote `hit_cylinder_at_t()` and `colorCylinder()` like follows, and used `colorCylinder()` in `main()`:
 
 ```cpp
 float hit_cylinder_at_t(const vec3& center, float radius, const ray& r){
@@ -867,7 +866,7 @@ outputs:
     <img src="./output/clinder.png" alt="alt text" style="width: 80%; border-radius: 0px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
 </p>
 
-Yay, it works, now let's make a finite cylinder by only using those $t$'s for which the $z$ value is between $z_max$ and $z_min$, and if 2 values of $t$ satisfy this we return the smaller value. The updated `hit_cylinder_at_t()` looks like:
+Yay, it works, now let's make a finite cylinder by only using those /t/'s for which the /z/ value is between /z_max/ and /z_min/, and if 2 values of /t/ satisfy this we return the smaller value. The updated `hit_cylinder_at_t()` looks like:
 ```cpp
 float hit_cylinder_at_t(const vec3& center, float radius, float z_min, float z_max, const ray& r){
     vec3 oc = r.origin() - center;
@@ -910,13 +909,13 @@ and this outputs:
 
 ### Cone
 
-To render a cone, we can follow a similar approach as we did for the cylinder. For a cone with its vertex at $(0,0,0)$ and its axis aligned along the $z$-axis, we can use the equation:
+To render a cone, we can follow a similar approach as we did for the cylinder. For a cone with its vertex at /(0,0,0)/ and its axis aligned along the /z/-axis, we can use the equation:
 
 $$
 x^2 + y^2 = (z\div h)^2 R^2
 $$
 
-where $R$ is radius of base, and $h$ is height
+where /R/ is radius of base, and /h/ is height
 
 $$
 \implies \left(A_x + t B_x\right)^2 + \left(A_y + t B_y\right)^2 = \left(\frac{A_z + t B_z}{h}\right)^2R^2
@@ -928,7 +927,7 @@ $$
 + \left(A_x^2 + A_y^2 - \frac{R^2 A_z^2}{h^2}\right) = 0
 $$
 
-This is quadratic in $t$ so using the approach we have used so far, we will define `hit_cone_at_t()` and `colorCone()`
+This is quadratic in /t/ so using the approach we have used so far, we will define `hit_cone_at_t()` and `colorCone()`
 
 ```cpp
 float hit_cone_at_t(const vec3& center, float radius, float height, const ray& r) {
@@ -979,7 +978,7 @@ float hit_cone_at_t(const vec3& center, float radius, float height, const ray& r
 }
 ```
 
-This outputs a double cone, corresponding to positive and negative $t$'s. We can change this by using `z_max` and `z_min` like we did for cylinder (code in comments, add 2 remaining parameters to the function).
+This outputs a double cone, corresponding to positive and negative /t/'s. We can change this by using `z_max` and `z_min` like we did for cylinder (code in comments, add 2 remaining parameters to the function).
 
 The `colorCone()` function is nearly identical. You can find it on the GitHub repo.
 
@@ -988,7 +987,7 @@ The `colorCone()` function is nearly identical. You can find it on the GitHub re
 </p>
 
 ### Torus
-Can be implemented similar to what we have done so far, but the final equation in $t$ is quartic (degree 4), which makes sense since a ray can intersect a torus at max 4 times. I am, for now, too tired to type out the math and the code, but it can be done lol. I'll try to add it soon.
+Can be implemented similar to what we have done so far, but the final equation in /t/ is quartic (degree 4), which makes sense since a ray can intersect a torus at max 4 times. I am, for now, too tired to type out the math and the code, but it can be done lol. I'll try to add it soon.
 
 For now: find the math here [http://cosinekitty.com/raytrace/chapter13_torus.html](https://www.cl.cam.ac.uk/teaching/1999/AGraphHCI/SMAG/node2.html)
  and a more involved piece here [http://cosinekitty.com/raytrace/chapter13_torus.html](http://cosinekitty.com/raytrace/chapter13_torus.html) 
