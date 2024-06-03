@@ -1,3 +1,8 @@
+<!-- MathJax -->
+<script type="text/javascript" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+
 # Balls and More: Experiments With Ray Tracers
 ## PART 1
 
@@ -1012,8 +1017,3 @@ For shits and giggles here is the render I made following Shirley's blog, which 
 </p>
 
 Thanks for reading so far (or skipping to the end, id do the same trust me). If you want to reach out w ideas, bugs, imporvements or to just chat wish it upon a star that we cross paths (or open a pull request, or write to me at utkarshzee@gmail.com)
-
-<!-- MathJax -->
-<script type="text/javascript" async
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-</script>
