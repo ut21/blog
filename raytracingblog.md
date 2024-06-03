@@ -987,7 +987,7 @@ The `colorCone()` function is nearly identical. You can find it on the GitHub re
 </p>
 
 ### Torus
-Can be implemented similar to what we have done so far, but the final equation in /t/ is quartic (degree 4), which makes sense since a ray can intersect a torus at max 4 times. I am, for now, too tired to type out the math and the code, but it can be done lol. I'll try to add it soon.
+Can be implemented similar to what we have done so far, but the final equation in \t\ is quartic (degree 4), which makes sense since a ray can intersect a torus at max 4 times. I am, for now, too tired to type out the math and the code, but it can be done lol. I'll try to add it soon.
 
 For now: find the math here [http://cosinekitty.com/raytrace/chapter13_torus.html](https://www.cl.cam.ac.uk/teaching/1999/AGraphHCI/SMAG/node2.html)
  and a more involved piece here [http://cosinekitty.com/raytrace/chapter13_torus.html](http://cosinekitty.com/raytrace/chapter13_torus.html) 
