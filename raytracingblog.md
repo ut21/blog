@@ -3,9 +3,9 @@
 
 
 ## Yapping and background
-I have worked a little bit with Neural Radiance Fields in the past before, especially on the neural part of it while treating the rendering part as a black box. But I have had a lot of free time lately so I went through Peter Shirley's amazing blog on ray tracing https://raytracing.github.io/ and built a primitve ray tracer of my own. So far the blog contains only the very basics of the tracer, and I plan to keep updating it and also implement some cool ideas I have that are possible with the current skeleton (but which I am too lazy for right now. I have been working on this blog for 5 days now which is 4 more than i expected to). You should go through the original weekend series, it's extremely well written and concise. I mostly follow it but eventually change a few things and take a different turn. Happy to hear any ideas you have about cool things to build with it. As you will see later, I used the tracer to render surfaces other than spheres (which shirley limits his first part of the series to), and this took the most time, so if you are able to parametrise ray collisions with any cool surfaces, i'd be happy to add it to the blog (with due credit). Just send the math also if you want, the coding part is trivial, but i really am too old to solve cubic equations now :') 
+I have worked a little bit with Neural Radiance Fields in the past before, especially on the neural part of it while treating the rendering part as a black box. But I have had a lot of free time lately so I went through Peter Shirley's amazing blog on ray tracing [https://raytracing.github.io/](https://raytracing.github.io/) and built a primitve ray tracer of my own. So far the blog contains only the very basics of the tracer, and I plan to keep updating it and also implement some cool ideas I have that are possible with the current skeleton (but which I am too lazy for right now. I have been working on this blog for 5 days now which is 4 more than i expected to). You should go through the original weekend series, it's extremely well written and concise. I mostly follow it but eventually change a few things and take a different turn. Happy to hear any ideas you have about cool things to build with it. As you will see later, I used the tracer to render surfaces other than spheres (which shirley limits his first part of the series to), and this took the most time, so if you are able to parametrise ray collisions with any cool surfaces, i'd be happy to add it to the blog (with due credit). Just send the math also if you want, the coding part is trivial, but i really am too old to solve cubic equations now :') 
 
-~~All~~ Most the code (albeit a little disorganised) can be found here: https://github.com/ut21/Ray-Tracing-Basics/tree/main
+~~All~~ Most the code (albeit a little disorganised) can be found here: [https://github.com/ut21/Ray-Tracing-Basics/tree/main](https://github.com/ut21/Ray-Tracing-Basics/tree/main)
 I'll eventually clean up the repo, but for now I have provided all the code within the blog if you need it.
 
 Have a good read :D
@@ -257,7 +257,7 @@ inline vec3 unit_vector(vec3 v) {
 
 It defines all the necessary constructors, operations, and methods that  will be required to manipulate rgb values. Make sure to use header guards, otherwise you might run into problems like this which are a pain to debug 🙃
 
-![alt text](image.png)
+![alt text](./output/)
 
 Now I could change our main function to use vec3:
 
@@ -711,13 +711,13 @@ To the constructor I added take two points (vec3 values) `lookfrom` and `lookat`
 Which means we have 2 (not necessarily perpendicular) linearly independant vectors, and we want to create the corresponding orthonormal basis. This basis is unique and can we calculated using thr _Gram-Schmidt process_.
 
 The math is better understood, when not explained by me:
-https://math.ryerson.ca/~danziger/professor/MTH141/Handouts/gram.pdf
+[https://math.ryerson.ca/~danziger/professor/MTH141/Handouts/gram.pdf](https://math.ryerson.ca/~danziger/professor/MTH141/Handouts/gram.pdf)
 
-https://math.berkeley.edu/~arash/54/notes/6_4.pdf
+[https://math.berkeley.edu/~arash/54/notes/6_4.pdf](https://math.berkeley.edu/~arash/54/notes/6_4.pdf)
 
-https://people.tamu.edu/~yvorobets//MATH304-2011A/Lect3-05web.pdf
+[https://people.tamu.edu/~yvorobets//MATH304-2011A/Lect3-05web.pdf](https://people.tamu.edu/~yvorobets//MATH304-2011A/Lect3-05web.pdf)
 
-https://www.youtube.com/watch?v=zHbfZWZJTGc
+[https://www.youtube.com/watch?v=zHbfZWZJTGc](https://www.youtube.com/watch?v=zHbfZWZJTGc)
 
 Turning this into code, this is our new `camera.h` file:
 
@@ -755,7 +755,7 @@ class camera {
 #endif
 ```
 
-This video is a good visualiser: https://www.youtube.com/watch?v=G6skrOtJtbM&ab_channel=Udacity
+This video is a good visualiser: [https://www.youtube.com/watch?v=G6skrOtJtbM&ab_channel=Udacity](https://www.youtube.com/watch?v=G6skrOtJtbM&ab_channel=Udacity)
 
 This is the output using 
 ```cpp
@@ -988,8 +988,8 @@ The `colorCone()` function is nearly identical. You can find it on the GitHub re
 ### Torus
 Can be implemented similar to what we have done so far, but the final equation in $t$ is quartic (degree 4), which makes sense since a ray can intersect a torus at max 4 times. I am, for now, too tired to type out the math and the code, but it can be done lol. I'll try to add it soon.
 
-For now: find the math here https://www.cl.cam.ac.uk/teaching/1999/AGraphHCI/SMAG/node2.html
- and a more involved piece here http://cosinekitty.com/raytrace/chapter13_torus.html 
+For now: find the math here [http://cosinekitty.com/raytrace/chapter13_torus.html](https://www.cl.cam.ac.uk/teaching/1999/AGraphHCI/SMAG/node2.html)
+ and a more involved piece here [http://cosinekitty.com/raytrace/chapter13_torus.html](http://cosinekitty.com/raytrace/chapter13_torus.html) 
 
 ![alt text](https://www.gsn-lib.org/docs/nodes/images/torus_20_50.png)
 
