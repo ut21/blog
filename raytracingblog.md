@@ -257,7 +257,7 @@ inline vec3 unit_vector(vec3 v) {
 
 It defines all the necessary constructors, operations, and methods that  will be required to manipulate rgb values. Make sure to use header guards, otherwise you might run into problems like this which are a pain to debug 🙃
 
-![alt text](./output/)
+![alt text](./output/erer.png)
 
 Now I could change our main function to use vec3:
 
