@@ -1,4 +1,6 @@
 # utkarsh
 
-## Coming soon. Check out the ray tracer blog: 
-[Blog](raytracingblog.md)
+## Coming soon. Check out the blogs: 
+[Ray Tracer](raytracingblog.md)
+\\
+[Lambda Calc](blogpost.md)
