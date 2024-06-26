@@ -32,14 +32,14 @@ $$
 $$
 
 here $\lambda$ is an operator that denotes a function in the language, the first $x$ denotes the input parameter and the second $x$ denotes the output as a 'function' of the input parameter. For example, a simple function like $f(x)=x+1 $ is written as $$\lambda x.x+1$$ or the polynomial $f(x)=x^2+x+1$ is $$\lambda x.x^2+x+1$$ which is to say that that the $\lambda$ operator allows you to __abstract__ over $x$. To evalute the function:
-$$
 
-\[
+$$
 \displaylines{
-(\lambda x. x^2 + x + 1) \, 2 \quad \implies \quad 2^2 + 2 + 1 \quad (\text{substitute for } 2) \\
-\quad \implies \quad 7 \quad (\text{arithmetic})
-}
-\]
+(\lambda x. x^2 + x + 1) \, 2
+\\
+\implies 2^2 + 2 +1
+\\
+\implies 7}
 $$
 
 Notice that we __substitute__  $2$ for all occurances of $x$ in the output. More formally:
