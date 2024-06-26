@@ -33,11 +33,11 @@ $$
 
 here $\lambda$ is an operator that denotes a function in the language, the first $x$ denotes the input parameter and the second $x$ denotes the output as a 'function' of the input parameter. For example, a simple function like $f(x)=x+1 $ is written as $$\lambda x.x+1$$ or the polynomial $f(x)=x^2+x+1$ is $$\lambda x.x^2+x+1$$ which is to say that that the $\lambda$ operator allows you to __abstract__ over $x$. To evalute the function:
 $$
-\displaylines{
+
 \begin{align*}
 (\lambda x. x^2 + x + 1) \space 2 & \quad \implies \quad 2^2 + 2 + 1 & \quad (\text{substitute for } 2) \\
                             & \quad \implies \quad 7           & \quad (\text{arithmetic})
-\end{align*}}
+\end{align*}
 $$
 
 Notice that we __substitute__  $2$ for all occurances of $x$ in the output. More formally:
@@ -180,6 +180,7 @@ $$
 $$
 
 Consider the $\beta$-reduction when True is passed (F is True):
+
 $$
 \displaylines{
   (\lambda F. \lambda m.\lambda n. F \space m\space n)\space True \space M \space N
@@ -198,6 +199,8 @@ $$
 $$
 
 and the $\beta$-reduction when the condition $F$ is False:
+
+
 $$
 \displaylines{
   (\lambda F. \lambda m.\lambda n. F \space m\space n)\space False \space M \space N
