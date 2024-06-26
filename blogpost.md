@@ -1,4 +1,15 @@
-<script type="text/javascript"> window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] }, svg: { fontCache: 'global' } }; </script> <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"> </script>
+<script type="text/javascript">
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    },
+    svg: {
+      fontCache: 'global'
+    }
+  };
+</script>
+<script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 # Nice Code Bro, Too Bad It's Just a Wrapper Over Math: Solving Leetcode in Lambda Calculus
 
@@ -25,12 +36,14 @@ $$
 
 Notice that we __substitute__  $2$ for all occurances of $x$ in the output. More formally:
 $$
-(\lambda x.M)N \implies M[x \coloneqq N]
+(\lambda x.M)N \implies M[x := N]
 $$
 
 There is no restriction on the _type_ of $N$ because types dont exist in (untypes) lambda calculus. It couldve been a string, an int, a float, bool, etc. however, lambda calculus does not recognise anything other than a function, so in that sense $N$ is also a lambda. We will see soon how to encode things like integers into lambda functions. For now, take lite.
 
-$M[x \coloneqq N]$ denotes the substituion of $N$ for the free occurances of $x$ in $M$. If you are familiar with the definition of free and bound variables in context of first order logic, then the same intuitive idea applies here: an occurrence of $x$ in $φ$ is free in $φ$ if and only if it is a leaf node in the parse tree of $φ$ such that there is no path upwards from that node $x$ to a node $∀x$ or $∃x$. But of course quanitifers do not exist in $\lambda$ calculus but the $\lambda$ operator is analogous to the logical quantifiers in that it __binds__ the variable appearing right after it (the input parameter) in term $M$ (the output), which is what the quantifiers also do (hence the 'no path upwards...' clause in the definition). Dont worry if it doesn't make sense, in my experience relying on a intuitive understanding of substitution works fine in most cases. 
+$M[x := N]$ denotes the substituion of $N$ for the bound occurances of $x$ in $M$. If you are familiar with the definition of free and bound variables in context of first order logic, then the same intuitive idea applies here: an occurrence of $x$ in $φ$ is free in $φ$ if and only if it is a leaf node in the parse tree of $φ$ such that there is no path upwards from that node $x$ to a node $∀x$ or $∃x$. But of course quanitifers do not exist in $\lambda$ calculus but the $\lambda$ operator is analogous to the logical quantifiers in that it __binds__ the variable appearing right after it (the input parameter) in term $M$ (the output), which is what the quantifiers also do (hence the 'no path upwards...' clause in the definition). Dont worry if it doesn't make sense, in my experience relying on a intuitive understanding of substitution works fine in most cases. 
+
+This is a good resource on the topic: https://home.uni-leipzig.de/gkobele/courses/2020.WS/CompLing/posts/funcprogandlambdacalc/
 
 To maintain disambiguity in our work we will maintain a "_hygeine condition_", i.e., we are only allowed to substitute into a lambda if the replacement term ($N$) does not contain the bound variable ($x$), otherwise we can simply rename our bound variable, becasue, notice that, the point of the lambda operator is to _abstract_ away from the bound variable, i.e.:
 $$
@@ -503,8 +516,131 @@ $$
 
 
 
-## loops
+## ~~Loops~~ Y Combinator
+
+A combinator is just a lambda expression with no free variables.
+
+Lambda calculus is a purely functional programming language which means it has no concept of iterations (which deal with state changes of variables), so we will need to simulate a while loop with recursion.
+
+Consider this _combinator_:
+
+$$
+  Ω=(λx.x(x))(λx.x(x))
+$$
+
+This is called the omega combinator and leads to an infinite (non-terminating) computation. $\omega = \lambda x.x(x) $ is the lambda expression which $Ω$ applies to itself.
+$$
+Ω=(λx.xx)(λx.xx)→(λx.xx)(λx.xx)→…
+$$
+
+i.e., it reproduces itself. This is a simple type of recursion (it is passed itself as an argument). 
+
+Another recursive combinator is the __Y Combinator__ which looks similar to the $Ω$ combinator:
+$$
+Y=λf.(λx.f(xx))(λx.f(xx))
+$$
+
+Semantically: it takes in a function $f$, and finds its "fixed point" which is defined as a point which conincides with it's image in $f$, i.e., $y$ is a fixed point of $f$ iff $f(y)=y$. 
+
+Let $$ g=λx.f(xx)$$then 
+$$
+
+\textbf{Y}f=gg
+\\
+\implies \textbf{Y}f=(λx.f(xx))(λx.f(xx))
+\\
+\implies \textbf{Y}f=f((λx.f(xx))(λx.f(xx)))=f(gg)
+\\
+\implies gg = f(gg)
+$$
+
+Hence, $gg$, i.e., $\textbf{Y}f$, the application of the Y Combinator the a function $f$ gives it's fixed point. Why is this interesting? Because it allows us to define a function that is not recursive, and apply the Y Combinator to it which makes it recursively call itself with different values.
+
+$$
+gg = f(gg) = f(f(gg)) = f(f(f(gg)))...
+\\
+\textbf{Y}f = f(\textbf{Y}f) = f(f(\textbf{Y}f)) ...
+$$
+
 
 ## FizzBuzz
 
-while loop. division. 
+To finally solve FizzBuzz in $\lambda$ calculus we will need to define 2 more predicates: `isMod3Zero` and `isMod5Zero`, which is easier than defining a more general `mod3` and `mod5` function or the even more general `mod` function. 
+
+Let's define the `FizzBuzz()` function in cpp:
+```cpp
+void fizzbuzz(int n){
+    for(int i = 1; i <= n; i++){
+        if(i % 3 == 0 && i % 5 == 0){
+            cout << "FizzBuzz" << endl;
+        } else if(i % 3 == 0){
+            cout << "Fizz" << endl;
+        } else if(i % 5 == 0){
+            cout << "Buzz" << endl;
+        } else {
+            cout << i << endl;
+        }
+    }
+}
+```
+
+But we can also define this function recursively which maps to what we are trying to do through lambda calc much better:
+
+```cpp
+void fizzbuzz_rec(int n){
+    if(n == 0){
+        return;
+    }
+    fizzbuzz_rec(n-1);
+    if(n % 3 == 0 && n % 5 == 0){
+        cout << "FizzBuzz" << endl;
+    } else if(n % 3 == 0){
+        cout << "Fizz" << endl;
+    } else if(n % 5 == 0){
+        cout << "Buzz" << endl;
+    } else {
+        cout << n << endl;
+    }
+}
+```
+
+The recursive outline of the following code is like this:
+
+1. Recursively call the function.
+2. Enter into a (nested) if-else block. 
+
+The if-else part of the code, tho cumbersome to write, is straightforward using the boolean predicates we have seen so far. 
+
+To deal with the recursion part, we will follow a simple strategy. Notice that in simple untyped lambda calc functions don't have names (all the named functions we have seen so far are aliases for convinience), which means we can't recurse by calling the function by name inside of its definition because the name does not exist. So we will abstract away the recursive function call and wrap the whole definition inside another function. I will now use a CPP type pseudolanguage.
+
+```cpp
+void almost_fizzbuzz(function f){
+  return f(int n){
+    if(n == 0){
+        return;
+    }
+    f(n-1);
+    if(n % 3 == 0 && n % 5 == 0){
+        cout << "FizzBuzz" << endl;
+    } else if(n % 3 == 0){
+        cout << "Fizz" << endl;
+    } else if(n % 5 == 0){
+        cout << "Buzz" << endl;
+    } else {
+        cout << n << endl;
+    }
+  }
+}
+```
+
+The strategy is to pass this almost function to the Y Combinator! To recap:
+
+1. Write your function iteratively.
+2. Change it to a recursive function. 
+3. Abstract the recursive call by changing the recursive function call name to $f$
+4. Wrap the whole function inside another function that takes $f$ as an argument.
+5. Pass the wrapper function to the Y Combinator.
+
+Why this works is very well explained here: https://mvanier.livejournal.com/2897.html
+
+The gist of it is that 
