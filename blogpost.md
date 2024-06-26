@@ -83,7 +83,8 @@ $$
 
 Let's test this by $\beta$-reducing it:
 $$
-    (\lambda x. \lambda y.x+y)2 \space 3 \\ \implies (\lambda y.2+y) 3 \\ \implies 2+3 \\ \implies 5
+\displaylines{
+    (\lambda x. \lambda y.x+y)2 \space 3 \\ \implies (\lambda y.2+y) 3 \\ \implies 2+3 \\ \implies 5}
 $$
 
 This is indeed correct and testable:
@@ -120,6 +121,7 @@ I initially opted to skip this section and instead write it in the appendix, but
 
 The complete BNF grammar is:
 $$
+\displaylines{
 
 \begin{array}{rcl}
 \langle \lambda\text{exp} \rangle & ::= & \langle \text{var} \rangle \\
@@ -127,7 +129,7 @@ $$
                                   & \mid & \lambda \langle \text{var} \rangle . \langle \lambda\text{exp} \rangle \\
                                   & \mid & ( \langle \lambda\text{exp} \rangle )\langle \lambda\text{exp} \rangle 
 \end{array}
-
+}
 $$
 
 This recursively defines all the valid expressions in the language
@@ -177,6 +179,7 @@ $$
 
 Consider the $\beta$-reduction when True is passed (F is True):
 $$
+\displaylines{
   (\lambda F. \lambda m.\lambda n. F \space m\space n)\space True \space M \space N
   \\
   \implies (\lambda m.\lambda n.True \space m \space n)\space M \space N
@@ -189,11 +192,12 @@ $$
 \\
 \implies (\lambda y.M)N
 \\
-\implies M
+\implies M}
 $$
 
 and the $\beta$-reduction when the condition $F$ is False:
 $$
+\displaylines{
   (\lambda F. \lambda m.\lambda n. F \space m\space n)\space False \space M \space N
   \\
   \implies (\lambda m.\lambda n.False \space m \space n)\space M \space N
@@ -207,6 +211,7 @@ $$
 \implies (\lambda y.y)N
 \\
 \implies N
+}
 $$
 
 ![alt text](<photos/Screenshot 2024-06-19 at 4.30.14 PM.png>)
@@ -215,13 +220,15 @@ Also note that we can name our lambda abstractions and use these names as aliase
 
 Hence:
 $$
-True \space x. \lambda y. x \\ \text{and} \\ False \space x. \lambda y. y
+\displaylines{
+True \space x. \lambda y. x \\ \text{and} \\ False \space x. \lambda y. y}
 $$
 
 but in interest of readability I will use the following aliasing convention:
 
 $$
-True = \lambda x. \lambda y. x \\ \text{and} \\ False = \lambda x. \lambda y. y
+\displaylines{
+True = \lambda x. \lambda y. x \\ \text{and} \\ False = \lambda x. \lambda y. y}
 $$
 
 Now that we have defined the True and False, we can do a lot of interesting things with just these.
@@ -233,6 +240,7 @@ $$
 
 The currying steps when $x$ is True and $y$ is False:
 $$
+\displaylines{
 (\lambda x. \lambda y. \space x \space y \space False) True \space False 
 \\
 \implies (\lambda y. True \space y \space False) False
@@ -243,7 +251,7 @@ $$
 \\
 ...
 \\
-\implies False
+\implies False}
 $$
 
 You could try to substitute $x$ and $y$ for all permutations of $True$ and $False$ and verify that the truth table is correct.
@@ -261,6 +269,7 @@ Verification of the truth table is fairly simple in this case and left as an exe
 Now all other logical operators can be defined in terms of $AND$ and $NOT$.
 
 $$
+\displaylines{
 OR \equiv \lor \equiv \lnot(\lnot A \land \lnot B)
 \\
 OR = NOT(AND(NOT(A) \space \space NOT(B)))
@@ -281,7 +290,7 @@ OR = ((A \space False \space True) \space (B\space False \space True) \space Fal
 \\[0.3in]
 \text{Hence,}
 \\
-OR = \lambda A. \lambda B. ((A \space False \space True) \space (B\space False \space True) \space False) False \space True
+OR = \lambda A. \lambda B. ((A \space False \space True) \space (B\space False \space True) \space False) False \space True}
 $$
 
 You could try making the truth table for this expression to verify that this is indeed correct. However, we could think of a simpler expression for $OR$. When the first argument is True we want to return True, otherwise we want to return whatever the second input is:
@@ -380,6 +389,7 @@ i.e., if $x$ is false return whatever $y$ is, otherwise return $\lnot y$.
 
 So, parityEqual:
 $$
+\displaylines{
   parityEqual = \lambda x. \lambda y. XOR(isEven(x) \space isEven(y)) \space False \space True
   \\[0.3in]
   \text{Substituting isEven(x) and isEven(y) in XOR}:
@@ -391,7 +401,7 @@ $$
   \implies isEven(x) (NOT \space isEven(y))\space  isEven(y)
   \\[0.3in]
   Hence,\\
-  parityEqual = \lambda x. \lambda y. isEven(x) (NOT \space isEven(y))\space  isEven(y) \space False \space True
+  parityEqual = \lambda x. \lambda y. isEven(x) (NOT \space isEven(y))\space  isEven(y) \space False \space True}
 $$
 
 ![alt text](<photos/Screenshot 2024-06-19 at 7.28.58 PM.png>)
@@ -551,22 +561,23 @@ Semantically: it takes in a function $f$, and finds its "fixed point" which is d
 
 Let $$ g=λx.f(xx)$$then 
 $$
-
+\displaylines{
 \textbf{Y}f=gg
 \\
 \implies \textbf{Y}f=(λx.f(xx))(λx.f(xx))
 \\
 \implies \textbf{Y}f=f((λx.f(xx))(λx.f(xx)))=f(gg)
 \\
-\implies gg = f(gg)
+\implies gg = f(gg)}
 $$
 
 Hence, $gg$, i.e., $\textbf{Y}f$, the application of the Y Combinator the a function $f$ gives it's fixed point. Why is this interesting? Because it allows us to define a function that is not recursive, and apply the Y Combinator to it which makes it recursively call itself with different values.
 
 $$
+\displaylines{
 gg = f(gg) = f(f(gg)) = f(f(f(gg)))...
 \\
-\textbf{Y}f = f(\textbf{Y}f) = f(f(\textbf{Y}f)) ...
+\textbf{Y}f = f(\textbf{Y}f) = f(f(\textbf{Y}f)) ...}
 $$
 
 
