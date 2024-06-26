@@ -22,7 +22,7 @@ Only a week in into the project did i realise that I was basically just writing 
 
 Like any other field of formal logic, the formal study of lambda calculus is littered, and for good reason, with involved formal definitions. These are very important, but also difficult to digest. This blog post is not an academic resource, hence, I opt for an intuitive natural language explanation. To maintain disambiguity and completeness I will link all the involved discussions, and definitions when I can. Forgive me for this math sacrilige. 
 
-The equivalent python code is available here: 
+The equivalent Python code is available [here](https://github.com/ut21/lambda-calculus).
 
 ## Introduction and definitions
 
