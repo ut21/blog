@@ -22,6 +22,7 @@ Only a week in into the project did i realise that I was basically just writing 
 
 Like any other field of formal logic, the formal study of lambda calculus is littered, and for good reason, with involved formal definitions. These are very important, but also difficult to digest. This blog post is not an academic resource, hence, I opt for an intuitive natural language explanation. To maintain disambiguity and completeness I will link all the involved discussions, and definitions when I can. Forgive me for this math sacrilige. 
 
+The equivalent python code is available here: 
 
 ## Introduction and definitions
 
@@ -32,10 +33,11 @@ $$
 
 here $\lambda$ is an operator that denotes a function in the language, the first $x$ denotes the input parameter and the second $x$ denotes the output as a 'function' of the input parameter. For example, a simple function like $f(x)=x+1 $ is written as $$\lambda x.x+1$$ or the polynomial $f(x)=x^2+x+1$ is $$\lambda x.x^2+x+1$$ which is to say that that the $\lambda$ operator allows you to __abstract__ over $x$. To evalute the function:
 $$
+\displaylines{
 \begin{align*}
 (\lambda x. x^2 + x + 1) \space 2 & \quad \implies \quad 2^2 + 2 + 1 & \quad (\text{substitute for } 2) \\
                             & \quad \implies \quad 7           & \quad (\text{arithmetic})
-\end{align*}
+\end{align*}}
 $$
 
 Notice that we __substitute__  $2$ for all occurances of $x$ in the output. More formally:
