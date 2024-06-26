@@ -60,7 +60,13 @@ $$
 (\lambda x.x^2)3
 $$
 
-and $$(\lambda t.t^2)3$$ are equivalent expressions (evaluate to the same quanitity for all substitutions).
+and 
+
+$$
+(\lambda t.t^2)3
+$$ 
+
+are equivalent expressions (evaluate to the same quanitity for all substitutions).
 
 __This is called $\beta$-reduction and is central to _lambda_ calculus__
 
