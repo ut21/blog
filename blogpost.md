@@ -16,7 +16,11 @@
 
 ## Background and motivation
 
-Like any other field of formal logic, the formal study of lambda calculus is littered, and for good reason, with involved formal definitions. These are very important, but also difficult to digest. This blog post is not an academic resource, hence, I opt for an intuitive natural language explanation. To maintain disambiguity and completeness I will link all the involved discussions, and definitions are the end in an appendix of sorts. Forgive me for this math sacrilige. 
+2 semesters ago I took Logic in Computer Science under Prof. Jagat at BITS, and it was probably the best CS course I have taken so far. I really enjoyed the formal theory side of computer science and the  approach the course took to build everything up from first principles. So when I came across Lambda Calculus which provided a nice mix of formalism and intuition, while also making the crazy ambitious claim: It is Turing Complete, so anything that can be done in ANY programming langugae can be done through the bare bones on functional mathematics, I knew the perfect way to spend the next 3 weeks: preparing for SI szn in the most inefficient way possible, by solving LeetCode in lambda calc.
+
+Only a week in into the project did i realise that I was basically just writing glorified Haskell, but oh well :)
+
+Like any other field of formal logic, the formal study of lambda calculus is littered, and for good reason, with involved formal definitions. These are very important, but also difficult to digest. This blog post is not an academic resource, hence, I opt for an intuitive natural language explanation. To maintain disambiguity and completeness I will link all the involved discussions, and definitions when I can. Forgive me for this math sacrilige. 
 
 
 ## Introduction and definitions
@@ -43,12 +47,14 @@ There is no restriction on the _type_ of $N$ because types dont exist in (untype
 
 $M[x := N]$ denotes the substituion of $N$ for the bound occurances of $x$ in $M$. If you are familiar with the definition of free and bound variables in context of first order logic, then the same intuitive idea applies here: an occurrence of $x$ in $φ$ is free in $φ$ if and only if it is a leaf node in the parse tree of $φ$ such that there is no path upwards from that node $x$ to a node $∀x$ or $∃x$. But of course quanitifers do not exist in $\lambda$ calculus but the $\lambda$ operator is analogous to the logical quantifiers in that it __binds__ the variable appearing right after it (the input parameter) in term $M$ (the output), which is what the quantifiers also do (hence the 'no path upwards...' clause in the definition). Dont worry if it doesn't make sense, in my experience relying on a intuitive understanding of substitution works fine in most cases. 
 
-This is a good resource on the topic: https://home.uni-leipzig.de/gkobele/courses/2020.WS/CompLing/posts/funcprogandlambdacalc/
+This is a good resource on the topic: [Uni Leipzig](https://home.uni-leipzig.de/gkobele/courses/2020.WS/CompLing/posts/funcprogandlambdacalc/)
 
 To maintain disambiguity in our work we will maintain a "_hygeine condition_", i.e., we are only allowed to substitute into a lambda if the replacement term ($N$) does not contain the bound variable ($x$), otherwise we can simply rename our bound variable, becasue, notice that, the point of the lambda operator is to _abstract_ away from the bound variable, i.e.:
+
 $$
 (\lambda x.x^2)3
 $$
+
 and $$(\lambda t.t^2)3$$ are equivalent expressions (evaluate to the same quanitity for all substitutions).
 
 __This is called $\beta$-reduction and is central to _lambda_ calculus__
@@ -420,60 +426,61 @@ $$
 pred=λn.λf.λx.(n(λg.λh.h(gf))(λu.x))(λu.u)
 $$
 
-A super helpful discussion on the semantics of `pred` is here: https://stackoverflow.com/questions/8790249/lambda-calculus-predecessor-function-reduction-steps, with the lower answers providing a better explanation, especially the ones by https://stackoverflow.com/users/12120531/dmitri-gekhtman and https://stackoverflow.com/users/418966/cyker 
+A super helpful discussion on the semantics of `pred` is here: [StackOverflow discussion](https://stackoverflow.com/questions/8790249/lambda-calculus-predecessor-function-reduction-steps), with the lower answers providing a better explanation, especially the ones by [Dmitri Gekhtman](https://stackoverflow.com/users/12120531/dmitri-gekhtman) and [Cyker](https://stackoverflow.com/users/418966/cyker).
+
 
 For the sake of completeness, here is dmitri's answer:
 
->I'll add my explanation to the above good ones, mostly for the sake of my own understanding. Here's the definition of PRED again: 
+> For the sake of completeness, here is dmitri's answer:
 >
->PRED := λnfx. (n (λg (λh.h (g f))) )  λu.x λu.u
-The stuff on the right side of the first dot is supposed to be the (n-1) fold composition of f applied to x: f^(n-1)(x).
+> I'll add my explanation to the above good ones, mostly for the sake of my own understanding. Here's the definition of PRED again: 
 >
->Let's see why this is the case by incrementally grokking the expression.
+> PRED := λnfx. (n (λg (λh.h (g f))) )  λu.x λu.u
+> The stuff on the right side of the first dot is supposed to be the (n-1) fold composition of f applied to x: f^(n-1)(x).
+> Let's see why this is the case by incrementally grokking the expression.
+> λu.x is the constant function valued at x. Let's just denote it const_x.
 >
->λu.x is the constant function valued at x. Let's just denote it const_x.
+> λu.u is the identity function. Let's call it id.
 >
->λu.u is the identity function. Let's call it id.
+> λg (λh.h (g f)) is a weird function that we need to understand. Let's call it F.
 >
->λg (λh.h (g f)) is a weird function that we need to understand. Let's call it F.
+> Ok, so PRED tells us to evaluate the n-fold composition of F on the constant function and then to evaluate the result on the identity function.
 >
->Ok, so PRED tells us to evaluate the n-fold composition of F on the constant function and then to evaluate the result on the identity function.
+> PRED := λnfx. F^n const_x id
+> Let's take a closer look at F:
 >
->PRED := λnfx. F^n const_x id
->Let's take a closer look at F:
+> F:= λg (λh.h (g f))
+> F sends g to evaluation at g(f). Let's denote evaluation at value y by ev_y. That is, ev_y := λh.h y
 >
->F:= λg (λh.h (g f))
->F sends g to evaluation at g(f). Let's denote evaluation at value y by ev_y. That is, ev_y := λh.h y
+> So
 >
->So
+> F = λg. ev_{g(f)}
+> Now we figure out what F^n const_x is.
 >
->F = λg. ev_{g(f)}
->Now we figure out what F^n const_x is.
+> F const_x = ev_{const_x(f)} = ev_x
+> and
 >
->F const_x = ev_{const_x(f)} = ev_x
->and
+> F^2 const_x = F ev_x = ev_{ev_x(f)} = ev_{f(x)}
+> Similarly,
 >
->F^2 const_x = F ev_x = ev_{ev_x(f)} = ev_{f(x)}
->Similarly,
+> F^3 const_x = F ev_{f(x)} = ev_{f^2(x)}
+> and so on:
 >
->F^3 const_x = F ev_{f(x)} = ev_{f^2(x)}
->and so on:
+> F^n const_x = ev_{f^(n-1)(x)}
 >
->F^n const_x = ev_{f^(n-1)(x)}
+> Now,
 >
->Now,
+> PRED
+>      = λnfx. F^n const_x id
 >
->PRED
->     = λnfx. F^n const_x id
+>      = λnfx. ev_{f^(n-1)(x)} id
 >
-     = λnfx. ev_{f^(n-1)(x)} id
-
-     = λnfx. id(f^(n-1)(x))
-
-     = λnfx. f^(n-1)(x)
->which is what we wanted.
+>      = λnfx. id(f^(n-1)(x))
 >
->Super goofy. The idea is to turn doing something n times into doing f n-1 times. The solution is to apply F n times to const_x to obtain ev_{f^(n-1)(x)} and then to extract f^(n-1)(x) by evaluating at the identity function.
+>      = λnfx. f^(n-1)(x)
+> which is what we wanted.
+>
+> Super goofy. The idea is to turn doing something n times into doing f n-1 times. The solution is to apply F n times to const_x to obtain ev_{f^(n-1)(x)} and then to extract f^(n-1)(x) by evaluating at the identity function.
 
 Ok! yay! That was something. Good thing is youll probably never need to come up with this on your own :D
 
@@ -565,7 +572,7 @@ $$
 
 ## FizzBuzz
 
-To finally solve FizzBuzz in $\lambda$ calculus we will need to define 2 more predicates: `isMod3Zero` and `isMod5Zero`, which is easier than defining a more general `mod3` and `mod5` function or the even more general `mod` function. 
+To finally solve FizzBuzz in $\lambda$ calculus we will need to define 2 more predicates: `isMod3Zero` and `isMod5Zero`, which is easier than defining a more general `mod3` and `mod5` function or the even more general `mod` function. But I will leave these as black boxes for now, and return to them once we have seen how to deal with recursion.
 
 Let's define the `FizzBuzz()` function in cpp:
 ```cpp
@@ -641,6 +648,69 @@ The strategy is to pass this almost function to the Y Combinator! To recap:
 4. Wrap the whole function inside another function that takes $f$ as an argument.
 5. Pass the wrapper function to the Y Combinator.
 
-Why this works is very well explained here: https://mvanier.livejournal.com/2897.html
+Why this works is very well explained here: [Mike Vanier's explanation](https://mvanier.livejournal.com/2897.html)
 
-The gist of it is that 
+The gist of it is that:
+$$
+fizzbuzz = \textbf{Y}(almost\_fizzbuzz) = almost\_fizzbuzz(\textbf{Y}(almost\_fizzbuzz))
+\\
+\implies fizzbuzz = almost\_fizzbuzz(fizzbuzz)
+$$
+
+Thus, we are able to pass the function to itself anonymously, and almost_fizzbuzz gets passed the correct function to evalute the next recursive argument.
+
+So, finally let's define the almost lambda function:
+
+$$
+almost\_fizzbuzz = 
+\lambda f.\lambda n. (IsEqual(n)(Zero))(\lambda x. \text{"Function Over"})\\
+(\lambda x. f (Pred(n)) (And(IsMod3Zero(n))(IsMod5Zero(n)))(λx. "FizzBuzz")
+\newline
+(IsMod3Zero(n))(λx. "Fizz")
+\\
+(IsMod5Zero(n))(λx. "Buzz")
+\\
+(\lambda x. n))
+$$
+
+Which is quite a mouthful, but just denotes a basic control flow on inspection. 
+
+Hence FizzBuzz is:
+$$
+FizzBuzz = \textbf{Y}almost\_fizzbuzz
+$$
+
+But, we still have to define the `isMod` functions. I will provide the recursive template, which needs to be made into its almost equivalent, and passed to the Y comb. I think this is now straightforward and left as an exercise :)
+
+```cpp
+bool isMod3Zero(int n){
+  if(n==0){
+    return true;
+  }
+  else if(n<0){
+    return false;
+  }
+  else{
+    return isMod3Zero(n-3);
+  }
+}
+```
+
+A helpful tip is to draw the if-else flowchart and to notice that in lambda calc 
+$$
+Predicate \space Lambda(\text{Lambda if Predicate is True})(\text{Lambda if Predicate is False})
+$$
+
+is equivalent to:
+```cpp
+if(Predicate){
+  Do smth
+}
+else{
+  Do smth else
+}
+```
+
+## Closing 
+
+Notice that I didn't implement the FizzBuzz lambda in Python. That's because there is a discussion on lazy and strict evaluation in programming langugaes that needs to happen before. However, I am too tried right now. Maybe a part 2 :p 
