@@ -34,13 +34,16 @@ $$
 here $\lambda$ is an operator that denotes a function in the language, the first $x$ denotes the input parameter and the second $x$ denotes the output as a 'function' of the input parameter. For example, a simple function like $f(x)=x+1 $ is written as $$\lambda x.x+1$$ or the polynomial $f(x)=x^2+x+1$ is $$\lambda x.x^2+x+1$$ which is to say that that the $\lambda$ operator allows you to __abstract__ over $x$. To evalute the function:
 $$
 
-\begin{align*}
-(\lambda x. x^2 + x + 1) \space 2 & \quad \implies \quad 2^2 + 2 + 1 & \quad (\text{substitute for } 2) \\
-                            & \quad \implies \quad 7           & \quad (\text{arithmetic})
-\end{align*}
+\[
+\displaylines{
+(\lambda x. x^2 + x + 1) \, 2 \quad \implies \quad 2^2 + 2 + 1 \quad (\text{substitute for } 2) \\
+\quad \implies \quad 7 \quad (\text{arithmetic})
+}
+\]
 $$
 
 Notice that we __substitute__  $2$ for all occurances of $x$ in the output. More formally:
+
 $$
 (\lambda x.M)N \implies M[x := N]
 $$
@@ -79,11 +82,13 @@ def sum(a, b):
     return a+b
 ```
 which takes in two arguments. We can in fact do this, the key is that even though the functions are unary, they are higher order, i.e., they can (and in a langugae like lambda calculus which only has the notion of functions, MUST) return other lambdas. The lambda function for the above python code if:
+
 $$
 \lambda x. \lambda y.x+y
 $$
 
 Let's test this by $\beta$-reducing it:
+
 $$
 \displaylines{
     (\lambda x. \lambda y.x+y)2 \space 3 \\ \implies (\lambda y.2+y) 3 \\ \implies 2+3 \\ \implies 5}
@@ -105,7 +110,7 @@ Also notice that the type of the value returned by $
 (\lambda x. \lambda y.x+y)2 \space 3
 $ is an int, but the type returned by $
 (\lambda x. \lambda y.x+y)2
-$ is a function, i.e., the first lambda, which binds x$$, return another lambda  which binds $y$. In code this is analogous to:
+$ is a function, i.e., the first lambda, which binds $x$, returns another lambda  which binds $y$. In code this is analogous to:
 ```javascript 
 function lambda1(x){
     return function lambda2(y){
@@ -122,6 +127,7 @@ function lambda1(x){
 I initially opted to skip this section and instead write it in the appendix, but as you will see soon ahead, it serves us very well to develop and define an unambiguous parsing grammar for $\lambda$ calculus.
 
 The complete BNF grammar is:
+
 $$
 \displaylines{
 
@@ -154,10 +160,13 @@ else{do something else}
 ```
 
 So, the encoding for True as a lambda function is:
+
 $$
   \lambda x.\lambda y. x
 $$
+
 and the eoncding for False is:
+
 $$
   \lambda x.\lambda y. y
 $$
@@ -175,6 +184,7 @@ else{
 ```
 
 is the same as saying:
+
 $$
 \lambda F. \lambda m.\lambda n. F \space m\space n
 $$
@@ -224,26 +234,32 @@ $$
 Also note that we can name our lambda abstractions and use these names as aliases for the expression. We do this by replace $\lambda$ by the name of the function, i.e., a $\lambda$ function is an anonymous function, which is consistent with the use of lambda functions in languages like Java where it means an anonymous function.
 
 Hence:
+
 $$
 \displaylines{
 True \space x. \lambda y. x \\ \text{and} \\ False \space x. \lambda y. y}
 $$
 
+
 but in interest of readability I will use the following aliasing convention:
+
 
 $$
 \displaylines{
 True = \lambda x. \lambda y. x \\ \text{and} \\ False = \lambda x. \lambda y. y}
 $$
 
+
 Now that we have defined the True and False, we can do a lot of interesting things with just these.
 
 For example:
+
 $$
   AND = \lambda x. \lambda y. \space x \space y \space False
 $$
 
 The currying steps when $x$ is True and $y$ is False:
+
 $$
 \displaylines{
 (\lambda x. \lambda y. \space x \space y \space False) True \space False 
@@ -355,6 +371,7 @@ int main(){
 ```
 
 This translates to:
+
 $$
   isZero = \lambda x. x \space (\lambda n. False)\space True
 $$
@@ -364,6 +381,7 @@ Why is this correct? It is so, because Zero is a lambda (like False) that return
 ![alt text](<photos/Screenshot 2024-06-19 at 4.34.12 PM.png>)
 
 We could also write a function that tells if a number is odd or even:
+
 $$
   isEven = \lambda x. x \space NOT \space True
 $$
@@ -386,6 +404,7 @@ bool parityEqual(int n, int m){
 ```
 
 So first let's define the XOR lambda:
+
 $$
   XOR = \lambda x. \lambda y. x(NOT \space y) \space y
 $$
@@ -393,6 +412,7 @@ $$
 i.e., if $x$ is false return whatever $y$ is, otherwise return $\lnot y$.
 
 So, parityEqual:
+
 $$
 \displaylines{
   parityEqual = \lambda x. \lambda y. XOR(isEven(x) \space isEven(y)) \space False \space True
@@ -418,6 +438,7 @@ Another important function we should define is `areEqual` which takes in two num
 ### Addition
 
 An addition lambda must take $m$ and $n$, two numerals as input and since, $m$ and $n$ correspond to applying a function $f$ (first input) to a starting value $x$ (second input) $m$, and $n$ number of times respectively, the output should apply $f$ to $x$ $\space$ $m+n$ number of times:
+
 $$
 add = \lambda m. \lambda n. \lambda f. \lambda x. m(f)(n(f)(x))
 $$
@@ -427,6 +448,7 @@ Fundamentally `add` applies $f$ to itself with $x$ as the starting value $n$ tim
 ### Multiplication
 
 $m*n$ is the same as adding $n$ to itself $m$ times. So the multiplication lambda must apply $n$ to $f$ and $x$ $m $ times and that's it.
+
 $$
 mult = \lambda m. \lambda n. \lambda f. \lambda x. m(n(f))(x)
 $$
@@ -526,6 +548,7 @@ $$
 will not work because sub(m n) will be zero when n is greater than m. The key to overcoming this is to notice that if two numbers $m$, $n$ are equal, both $m-n$ and $n-m$ are Zero, and when they are not equal only one of the differences is Zero (corresponding to smaller - greater).
 
 Hence the predicate we want to check for is:
+
 $$
 isZero(m-n) \land isZero(n-m)
 $$
@@ -551,6 +574,7 @@ $$
 $$
 
 This is called the omega combinator and leads to an infinite (non-terminating) computation. $\omega = \lambda x.x(x) $ is the lambda expression which $Ω$ applies to itself.
+
 $$
 Ω=(λx.xx)(λx.xx)→(λx.xx)(λx.xx)→…
 $$
@@ -558,13 +582,21 @@ $$
 i.e., it reproduces itself. This is a simple type of recursion (it is passed itself as an argument). 
 
 Another recursive combinator is the __Y Combinator__ which looks similar to the $Ω$ combinator:
+
 $$
 Y=λf.(λx.f(xx))(λx.f(xx))
 $$
 
 Semantically: it takes in a function $f$, and finds its "fixed point" which is defined as a point which conincides with it's image in $f$, i.e., $y$ is a fixed point of $f$ iff $f(y)=y$. 
 
-Let $$ g=λx.f(xx)$$then 
+Let 
+
+$$ 
+g=λx.f(xx)
+$$
+
+then 
+
 $$
 \displaylines{
 \textbf{Y}f=gg
@@ -667,6 +699,7 @@ The strategy is to pass this almost function to the Y Combinator! To recap:
 Why this works is very well explained here: [Mike Vanier's explanation](https://mvanier.livejournal.com/2897.html)
 
 The gist of it is that:
+
 $$
 \displaylines{
 fizzbuzz = \textbf{Y}(almost\_fizzbuzz) = almost\_fizzbuzz(\textbf{Y}(almost\_fizzbuzz))
@@ -694,6 +727,7 @@ $$
 Which is quite a mouthful, but just denotes a basic control flow on inspection. 
 
 Hence FizzBuzz is:
+
 $$
 FizzBuzz = \textbf{Y}almost\_fizzbuzz
 $$
@@ -715,6 +749,7 @@ bool isMod3Zero(int n){
 ```
 
 A helpful tip is to draw the if-else flowchart and to notice that in lambda calc 
+
 $$
 Predicate \space Lambda(\text{Lambda if Predicate is True})(\text{Lambda if Predicate is False})
 $$
