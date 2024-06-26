@@ -662,6 +662,7 @@ Thus, we are able to pass the function to itself anonymously, and almost_fizzbuz
 So, finally let's define the almost lambda function:
 
 $$
+\displaylines{
 almost\_fizzbuzz = 
 \lambda f.\lambda n. (IsEqual(n)(Zero))(\lambda x. \text{"Function Over"})\\
 (\lambda x. f (Pred(n)) (And(IsMod3Zero(n))(IsMod5Zero(n)))(λx. "FizzBuzz")
@@ -670,7 +671,7 @@ almost\_fizzbuzz =
 \\
 (IsMod5Zero(n))(λx. "Buzz")
 \\
-(\lambda x. n))
+(\lambda x. n))}
 $$
 
 Which is quite a mouthful, but just denotes a basic control flow on inspection. 
