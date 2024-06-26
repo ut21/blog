@@ -652,9 +652,10 @@ Why this works is very well explained here: [Mike Vanier's explanation](https://
 
 The gist of it is that:
 $$
+\displaylines{
 fizzbuzz = \textbf{Y}(almost\_fizzbuzz) = almost\_fizzbuzz(\textbf{Y}(almost\_fizzbuzz))
 \\
-\implies fizzbuzz = almost\_fizzbuzz(fizzbuzz)
+\implies fizzbuzz = almost\_fizzbuzz(fizzbuzz)}
 $$
 
 Thus, we are able to pass the function to itself anonymously, and almost_fizzbuzz gets passed the correct function to evalute the next recursive argument.
