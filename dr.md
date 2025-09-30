@@ -772,41 +772,54 @@ $$
 But our model is not a boolean function (i think it can be expressed as a boolean function if we come up with an appropriate decimal $\to$ binary encoding for the input and outputs, but i wasn't sure how to do this while satisfying all the constraints required. I think the naive encoding doesn't work because 1 bit flip should represent semantically similar degrees of change regardless of position, which is not the case for the naive conversion). But then I realised that _sensitivty_ is just a measure in boolean functions of what would otherwise be the _derivitive_ with respect to the input... so much mental gymnastics. So, now let's look at the derivitives (parts of the following section was written with the help of ChatGPT-5 and so inadvertent errors might be present)
 
 So for a continuous function, let $f : X \to Y$ with $X \subseteq \mathbb{R}^n$ and equip $Y$ with a norm-induced metric $d(a,b)=\lVert a-b\rVert$. The directional sensitivity along coordinate $i$ becomes the directional derivative measured in that norm,
+
 $$
 s_i(f, x) = \lim_{\epsilon \to 0} \frac{\lVert f(x) - f(x + \epsilon e_i) \rVert}{\epsilon}.
 $$
+
 Summing over coordinates recovers the local score,
+
 $$
 s(f, x) = \sum_{i=1}^n s_i(f, x),
 $$
+
 and integrating against any input distribution $\mu$ (random agent initialisations, diffusion strength, etc.) yields the average sensitivity
+
 $$
 \operatorname{as}_{\mu}(f) = \mathbb{E}_{x \sim \mu}[s(f,x)].
 $$
 
 When $f$ is differentiable and $Y \subseteq \mathbb{R}^m$, the limit above is just the column-wise norm of the Jacobian:
+
 $$
 J_f(x) = \left[\frac{\partial f_i}{\partial x_j}(x)\right]_{i=1..m,\; j=1..n}, \qquad s_i(f,x) = \left\|\frac{\partial f}{\partial x_i}(x)\right\|.
 $$
+
 In Euclidean space this makes $s(f,x)$ the sum of Euclidean norms of the Jacobian columns (the operator 1-norm induced by $\lVert\cdot\rVert_2$). If you care about a different notion of "large change," just swap in the matrix norm that matches your metric.
 
 For the Physarum update rule $x_{t+1} = F(x_t, \theta)$, sensitivities compound over time because each step multiplies the previous perturbation by a Jacobian:
+
 $$
 \Delta x_t \approx \left(\prod_{k=0}^{t-1} J_F(x_k)\right) \Delta x_0.
 $$
+
 The rate at which these products blow up (or shrink) is governed by the [Lyapunov exponent](https://en.wikipedia.org/wiki/Lyapunov_exponent) of $F$, which quantifies how much two trajectories diverge given an initial seperation. The largest exponent
+
 $$
 \lambda_{\max} = \lim_{t \to \infty} \frac{1}{t} \log \frac{\lVert\Delta x_t\rVert}{\lVert\Delta x_0\rVert}
 $$
+
 is the formal version of "do tiny changes in initialisation change the output by a lot" A positive $\lambda_{\max}$ mean "yes".
 
 #### A linear toy model
 
 I will now cheat and deal with an incredibly simple model of the algorithm, where each state is a 2-tuple and all changes to states are linear functions with only minimal parameters as you will see. Collapse Physarum’s state to pheromone magnitude $p_t$ and aggregate agent activity $y_t$. Stack them into $x_t = (p_t, y_t)^\top \in \mathbb{R}^2$ and let the update be linear,
+
 $$
 x_{t+1} = F(x_t; \theta) = Ax_t,\qquad
 A = \begin{pmatrix} 1 - \beta & \alpha \\ \gamma & 1 - \kappa \end{pmatrix},
 $$
+
 with parameters:
 
 $\alpha > 0$ — pheromone deposition by agents,
@@ -818,18 +831,25 @@ $\gamma > 0$ — agent response to pheromone,
 $\kappa \in (0,1)$ — agent damping.
 
 Perturb an initial state by $\delta x_0$ and it evolves as $\delta x_t = A^t \delta x_0$. If $A$ diagonalises as $A = V\Lambda V^{-1}$ with eigenpairs $(\lambda_j, v_j)$, the perturbation decomposes into eigen-directions,
+
 $$
 \delta x_t = \sum_{j=1}^2 c_j \lambda_j^t v_j.
 $$
+
 The largest $|\lambda_j|$ wins, so the discrete-time Lyapunov exponent is simply
+
 $$
 \lambda_{\max}^{\text{Lyap}} = \log \rho(A), \qquad \rho(A) = \max(|\lambda_1|,|\lambda_2|).
 $$
+
 Eigenvalues drop straight out of the quadratic formula,
+
 $$
 \lambda_{\pm} = \frac{2 - \beta - \kappa \pm \sqrt{(\beta - \kappa)^2 + 4\alpha\gamma}}{2},
 $$
+
 so exponential growth shows up exactly when $\lambda_+ > 1$. Rearranging the inequality gives a clean condition,
+
 $$
 \rho(A) = \lambda_+ > 1 \;\Longleftrightarrow\; (\beta - \kappa)^2 + 4\alpha\gamma > (\beta + \kappa)^2 \;\Longleftrightarrow\; \alpha\gamma > \beta\kappa.
 $$
