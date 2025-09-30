@@ -836,7 +836,7 @@ $$
 \delta x_t = \sum_{j=1}^2 c_j \lambda_j^t v_j.
 $$
 
-The largest $|\lambda_j|$ wins, so the discrete-time Lyapunov exponent is simply
+The largest |λ_j| wins, so the discrete-time Lyapunov exponent is simply
 
 $$
 \lambda_{\max}^{\text{Lyap}} = \log \rho(A), \qquad \rho(A) = \max(|\lambda_1|,|\lambda_2|).
