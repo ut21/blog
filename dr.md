@@ -758,10 +758,13 @@ A lot of these techniques use algorithms are of course not random because of det
  I am sure there are better measures, but I wanted to do this crackpot-ery to see if it goes somewhere. So we start with sensititivty for boolean functions.
 
 a Boolean function $f : \{0,1\}^n \to \{0,1\}$. For an input $x \in \{0,1\}^n$, the (local) sensitivity counts the number of single-bit flips that change the outcome,
+
 $$
 s(f, x) = \left|\left\{ i \in [n] : f(x) \neq f\bigl(x \oplus e_i\bigr) \right\}\right|,
 $$
+
 where $x \oplus e_i$ flips the $i$-th coordinate. Averaging over the cube gives the global score,
+
 $$
 \operatorname{as}(f) = \mathbb{E}_{x \sim \{0,1\}^n}[s(f,x)] = \frac{1}{2^n} \sum_{x \in \{0,1\}^n} s(f,x).
 $$
