@@ -461,7 +461,7 @@ figcaption {
 
 
 <nav class="toc-wrapper" aria-label="Table of Contents">
-    <p class="toc-title">Contents</p>
+    <!-- <p class="toc-title">Contents</p> -->
     <ol class="toc-list">
         <li>
             <div class="toc-line">
