@@ -739,7 +739,7 @@ And here are my clearly unimpressed "friends" >:(
 </div>
 
 ### Tangent 2
-A small obsession of mine some time ago were (pseduo-)random algorithms for things like terrain generation. The Physarum simulation is a good candidate for terrain/cave generation because all you need to do is discretize the outputs and you get crevices that grow and shrink in a pretty way. An exceedingly easy way to do this discretization is to simply use a discrete `matplotlib` palette. One of these:
+Another small interest of mine at some point were (pseduo-)random algorithms for things like terrain generation. The Physarum simulation is a good candidate for terrain/cave generation because all you need to do is discretize the outputs and you get crevices that grow and shrink in a pretty way. An exceedingly easy way to do this discretization is to simply use a discrete `matplotlib` palette. One of these:
 
 <div align="center">
 <img src="assets/qual.png"
