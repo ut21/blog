@@ -466,7 +466,7 @@ figcaption {
         <li>
             <div class="toc-line">
                 <span class="toc-number" aria-hidden="true"></span>
-                <a class="toc-link" href="#intro-and-background">Intro and background</a>
+                <a class="toc-link" href="#intro-and-background">IBackground</a>
             </div>
         </li>
         <li>
